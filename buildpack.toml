@@ -1,0 +1,19 @@
+api = "0.1"
+
+[buildpack]
+
+id = "anasinnyk/dotenv"
+version = "0.0.1"
+name = "dotenv"
+homepage = "https://github.com/anasinnyk/dotent-buildpack"
+description = "Load environment variables form .env file"
+keywords = ["dotenv"]
+
+  [[buildpack.licenses]]
+
+  type = "MIT"
+  uri = "https://github.com/anasinnyk/dotenv-buildpack/blob/master/LICENSE"
+
+[[stacks]]
+
+id = "*"
