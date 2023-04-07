@@ -9,6 +9,7 @@ use libcnb::layer_env::{LayerEnv, Scope, ModificationBehavior};
 use libcnb::{buildpack_main, Buildpack};
 use std::path::Path;
 use serde::Deserialize;
+use std::env;
 
 pub(crate) struct DotenvBuildpack;
 
@@ -35,7 +36,10 @@ impl Buildpack for DotenvBuildpack {
     fn build(&self, context: BuildContext<Self>) -> libcnb::Result<BuildResult, Self::Error> {
         println!("---> DotEnv Buildpack");
 
-        context.handle_layer(layer_name!("dotenv"), DotenvLayer)?;
+        match context.handle_layer(layer_name!("dotenv"), DotenvLayer) {
+            Ok(l)    => println!("{:?}", l.env),
+            Err(err) => println!("{}", err),
+        }
 
         BuildResultBuilder::new()
             .build()
@@ -91,7 +95,8 @@ pub(crate) struct DotenvBuildpackMetadata {
 
 impl DotenvBuildpackMetadata {
     pub fn filename(&self) -> String {
-        println!("{:?}", option_env!("BP_DOTENV_SUFFIX"));
+        println!("ALL ENVs: {:?}", env::vars_os());
+        println!("BP_DOTENV_SUFFIX: {:?}", option_env!("BP_DOTENV_SUFFIX"));
         let suffix = if let Some(s) = option_env!("BP_DOTENV_SUFFIX") { s.to_string() } else { self.dotenv_suffix.to_string() };
 
         format!(".env.{}", suffix).trim_end_matches('.').to_string()
