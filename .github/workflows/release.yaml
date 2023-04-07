@@ -25,8 +25,12 @@ jobs:
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2.0.0
 
-      - name: Install yj
-        run: cargo install yj
+      - uses: supplypike/setup-bin@v3
+        with:
+          uri: 'https://github.com/sclevine/yj/releases/download/v5.1.0/yj-linux-amd64'
+          name: 'yj'
+          version: 'v5.1.0'
+
       - name: Install libcnb framework
         run: cargo install libcnb-cargo
       - name: Install Rust linux-musl target
