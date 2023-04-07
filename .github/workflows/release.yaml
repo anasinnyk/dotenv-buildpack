@@ -72,9 +72,9 @@ jobs:
         env:
           REPO: ghcr.io/anasinnyk/dotenv-buildpack
       - id: register
-        uses: docker://ghcr.io/buildpacks/actions/registry/request-add-entry:5.0.1
+        uses: docker://ghcr.io/buildpacks/actions/registry/request-add-entry:5.1.0
         with:
-          token:   ${{ secrets.PUBLIC_REPO_TOKEN }}
+          token:   ${{ secrets.GITHUB_TOKEN }}
           id:      ${{ steps.package.outputs.bp_id }}
           version: ${{ steps.package.outputs.version }}
           address: ${{ steps.package.outputs.address }}
