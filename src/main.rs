@@ -51,7 +51,7 @@ impl Layer for DotenvLayer {
     fn types(&self) -> LayerTypes {
         LayerTypes {
             build: true,
-            launch: false,
+            launch: true,
             cache: false,
         }
     }
@@ -68,7 +68,10 @@ impl Layer for DotenvLayer {
         dotenv::from_filename_iter(&context.app_dir.join(&context.buildpack_descriptor.metadata.filename())).unwrap()
             .for_each(|r| {
                 match r {
-                    Ok((name, value)) => Some(le.insert(Scope::All, ModificationBehavior::Default, name, value)),
+                    Ok((name, value)) => {
+                        println!("Set {}={}", name, value);
+                        Some(le.insert(Scope::Launch, ModificationBehavior::Append, name, value))
+                    },
                     Err(_) => None,
                 };
             });
