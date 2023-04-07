@@ -1,9 +1,9 @@
-api = "0.1"
+api = "0.9"
 
 [buildpack]
 
 id = "anasinnyk/dotenv"
-version = "0.0.2"
+version = "0.0.3"
 name = "dotenv"
 homepage = "https://github.com/anasinnyk/dotent-buildpack"
 description = "Load environment variables form .env file"
