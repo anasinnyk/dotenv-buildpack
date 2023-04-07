@@ -61,7 +61,7 @@ impl Layer for DotenvLayer {
         context: &BuildContext<Self::Buildpack>,
         _layer_path: &Path,
     ) -> Result<LayerResult<Self::Metadata>, DotenvBuildpackError> {
-        println!("---> Parse .env file and set it to image");
+        println!("---> Parse {} file and set it to image", &context.buildpack_descriptor.metadata.filename());
 
         let mut le = LayerEnv::new();
 
@@ -91,6 +91,7 @@ pub(crate) struct DotenvBuildpackMetadata {
 
 impl DotenvBuildpackMetadata {
     pub fn filename(&self) -> String {
+        println!("{:?}", option_env!("BP_DOTENV_SUFFIX"));
         let suffix = if let Some(s) = option_env!("BP_DOTENV_SUFFIX") { s.to_string() } else { self.dotenv_suffix.to_string() };
 
         format!(".env.{}", suffix).trim_end_matches('.').to_string()
