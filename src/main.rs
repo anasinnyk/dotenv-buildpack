@@ -59,13 +59,13 @@ impl Layer for DotenvLayer {
     fn create(
         &self,
         context: &BuildContext<Self::Buildpack>,
-        layer_path: &Path,
+        _layer_path: &Path,
     ) -> Result<LayerResult<Self::Metadata>, DotenvBuildpackError> {
         println!("---> Parse .env file and set it to image");
 
         let mut le = LayerEnv::new();
 
-        dotenv::from_filename_iter(layer_path.join(&context.buildpack_descriptor.metadata.filename())).unwrap()
+        dotenv::from_filename_iter(&context.app_dir.join(&context.buildpack_descriptor.metadata.filename())).unwrap()
             .for_each(|r| {
                 match r {
                     Ok((name, value)) => Some(le.insert(Scope::All, ModificationBehavior::Default, name, value)),

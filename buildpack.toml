@@ -3,7 +3,7 @@ api = "0.8"
 [buildpack]
 
 id = "anasinnyk/dotenv"
-version = "0.0.5"
+version = "0.0.7"
 name = "dotenv"
 homepage = "https://github.com/anasinnyk/dotent-buildpack"
 description = "Load environment variables form .env file"
