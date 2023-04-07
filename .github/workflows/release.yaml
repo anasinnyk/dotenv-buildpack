@@ -12,6 +12,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      issues: write
     steps:
       - id: checkout
         uses: actions/checkout@v3
