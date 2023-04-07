@@ -9,6 +9,9 @@ jobs:
   register:
     name: Package, Publish, and Register
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - id: checkout
         uses: actions/checkout@v3
