@@ -2,7 +2,7 @@ api = "0.1"
 
 [buildpack]
 
-id = "buildpack/dotenv"
+id = "anasinnyk/dotenv"
 version = "0.0.1"
 name = "dotenv"
 homepage = "https://github.com/anasinnyk/dotent-buildpack"
