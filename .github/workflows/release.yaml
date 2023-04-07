@@ -65,7 +65,7 @@ jobs:
           echo "::set-output name=package::${ESCAPED_ID}_${VERSION}.cnb"
         shell: bash
         env:
-          REPO: ghcr.io/anasinnyk
+          REPO: ghcr.io/anasinnyk/dotenv-buildpack
       - id: register
         uses: docker://ghcr.io/buildpacks/actions/registry/request-add-entry:5.0.1
         with:
