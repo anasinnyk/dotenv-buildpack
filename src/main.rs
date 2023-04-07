@@ -18,7 +18,7 @@ impl Buildpack for DotenvBuildpack {
     type Error = DotenvBuildpackError;
 
     fn detect(&self, context: DetectContext<Self>) -> libcnb::Result<DetectResult, Self::Error> {
-        if context.app_dir.join(".env").exists() {
+        if context.app_dir.join(&context.buildpack_descriptor.metadata.filename()).exists() {
             DetectResultBuilder::pass()
                 .build_plan(
                     BuildPlanBuilder::new()
@@ -63,14 +63,9 @@ impl Layer for DotenvLayer {
     ) -> Result<LayerResult<Self::Metadata>, DotenvBuildpackError> {
         println!("---> Parse .env file and set it to image");
 
-        let metadata = &context.buildpack_descriptor.metadata;
-
-        let suffix = if let Some(s) = option_env!("BP_DOTENV_SUFFIX") { s.to_string() } else { metadata.dotenv_suffix.to_string()  };
-
-        let filename = format!(".env.{}", suffix).trim_end_matches('.').to_string();
         let mut le = LayerEnv::new();
 
-        dotenv::from_filename_iter(layer_path.join(filename)).unwrap()
+        dotenv::from_filename_iter(layer_path.join(&context.buildpack_descriptor.metadata.filename())).unwrap()
             .for_each(|r| {
                 match r {
                     Ok((name, value)) => Some(le.insert(Scope::All, ModificationBehavior::Default, name, value)),
@@ -89,6 +84,14 @@ impl Layer for DotenvLayer {
 #[serde(deny_unknown_fields)]
 pub(crate) struct DotenvBuildpackMetadata {
     pub dotenv_suffix: String,
+}
+
+impl DotenvBuildpackMetadata {
+    pub fn filename(&self) -> String {
+        let suffix = if let Some(s) = option_env!("BP_DOTENV_SUFFIX") { s.to_string() } else { self.dotenv_suffix.to_string() };
+
+        format!(".env.{}", suffix).trim_end_matches('.').to_string()
+    }
 }
 
 
