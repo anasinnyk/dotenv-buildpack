@@ -74,7 +74,7 @@ impl Layer for DotenvLayer {
                 match r {
                     Ok((name, value)) => {
                         println!("Set {}={}", name, value);
-                        Some(le.insert(Scope::Launch, ModificationBehavior::Append, name, value))
+                        Some(le.insert(Scope::All, ModificationBehavior::Override, name, value))
                     },
                     Err(_) => None,
                 };
@@ -95,7 +95,7 @@ pub(crate) struct DotenvBuildpackMetadata {
 
 impl DotenvBuildpackMetadata {
     pub fn filename(&self) -> String {
-        println!("ALL ENVs: {:?}", env::vars_os());
+        env::vars().for_each(|(k,v)| println!("Key: {k}, Value: {v}"));
         println!("BP_DOTENV_SUFFIX: {:?}", option_env!("BP_DOTENV_SUFFIX"));
         let suffix = if let Some(s) = option_env!("BP_DOTENV_SUFFIX") { s.to_string() } else { self.dotenv_suffix.to_string() };
 
