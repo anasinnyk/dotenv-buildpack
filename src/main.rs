@@ -95,9 +95,7 @@ pub(crate) struct DotenvBuildpackMetadata {
 
 impl DotenvBuildpackMetadata {
     pub fn filename(&self) -> String {
-        env::vars().for_each(|(k,v)| println!("Key: {k}, Value: {v}"));
-        println!("BP_DOTENV_SUFFIX: {:?}", option_env!("BP_DOTENV_SUFFIX"));
-        let suffix = if let Some(s) = option_env!("BP_DOTENV_SUFFIX") { s.to_string() } else { self.dotenv_suffix.to_string() };
+        let suffix = if let Some(s) = env::var_os("BP_DOTENV_SUFFIX") { s.into_string().unwrap() } else { self.dotenv_suffix.to_string() };
 
         format!(".env.{}", suffix).trim_end_matches('.').to_string()
     }
